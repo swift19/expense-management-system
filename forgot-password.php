@@ -58,7 +58,7 @@ if (isset($_POST['submit'])) {
 								<input class="form-control" placeholder="Mobile Number" name="contactno" type="contactno" value="" required="true">
 							</div>
 							<div class="form-group">
-								<button type="submit" value="" name="submit" class="btn btn-primary" style="width:100%">Reset</button>
+								<button type="submit" value="" name="submit" class="btn btn-primary" style="width:100%">Submit</button>
 							</div>
 						</fieldset>
 						<p style="font-size:16px; color:red" align="center"> <?php if ($msg) {
