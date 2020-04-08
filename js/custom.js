@@ -3,9 +3,9 @@ $('#calendar').datepicker({
 
 !function ($) {
     $(document).on("click","ul.nav li.parent > a ", function(){          
-        $(this).find('em').toggleClass("fa-minus");      
+        $(this).find('em').toggleClass("fa-arrow-down");      
     }); 
-    $(".sidebar span.icon").find('em:first').addClass("fa-plus");
+    $(".sidebar span.icon").find('em:first').addClass("fa-arrow-right");
 }
 
 (window.jQuery);
