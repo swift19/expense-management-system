@@ -38,19 +38,9 @@ if (strlen($_SESSION['detsuid'] == 0)) {
 			<div class="row">
 				<ol class="breadcrumb">
 					<li>
-						<!-- <a href="#">
+						<a href="#">
 							 <em class="fa fa-home"></em>						
-						</a> -->
-
-
-						<div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sidebar-collapse"><span class="sr-only">Toggle navigation</span>
-            </button>          
-        
-
-		</div>
-		
-
+						</a>
 					</li>
 					<li class="active">Dashboard </li>
 				</ol>

@@ -41,6 +41,8 @@ include('includes/dbconnection.php');
                         <span class="fa fa-arrow-right">&nbsp;</span> Manage Expenses
                     </a></li>
 
+                    <li><a href="add-expense-category.php"><em class="fa fa-list-alt">&nbsp;</em> Expense Category</a></li>
+
             </ul>
 
         </li>
@@ -65,7 +67,7 @@ include('includes/dbconnection.php');
 
 
 
-        <li><a href="user-profile.php"  class="list-group-item list-group-item-action bg-light"><em class="fa fa-list-alt">&nbsp;</em> Expense Category</a></li>
+        <li><a href="user-profile.php"><em class="fa fa-list-alt">&nbsp;</em> Expense Category</a></li>
         <li><a href="user-profile.php"><em class="fa fa-user">&nbsp;</em> My Profile</a></li>
         <li><a href="change-password.php"><em class="fa fa-clone">&nbsp;</em> Change Password</a></li>        
         <li><a data-toggle="modal" data-target="#logOut"><em class="fa fa-power-off" >&nbsp;</em> Logout</a></li>        
