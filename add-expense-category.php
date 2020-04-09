@@ -114,7 +114,7 @@ if (strlen($_SESSION['detsuid'] == 0)) {
 											<tbody>
 												<tr>
 													<td><?php echo $cnt; ?></td>
-													<td><?php echo $row['Category']; ?> <?php echo $rowId; ?> </td>
+													<td><?php echo $row['Category']; ?> </td>
 													<td><span hidden='true'><?php echo  $row['ID']; ?></span></td>
 													<td>													
 														<button data-toggle="modal" class="btn btn-info editbtn">&nbsp; Edit &nbsp;</button>
