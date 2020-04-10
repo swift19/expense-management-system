@@ -5,18 +5,23 @@ include('includes/dbconnection.php');
 ?>
 <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar wrapper">
   <div class="profile-sidebar">
+    <?php
+    $userid = $_SESSION['detsuid'];
+    $query = mysqli_query($con, "select * from tbluser where ID='$userid'");
+    $row = mysqli_fetch_array($query);    
+    $noImage = 'https://placehold.it/150/30a5ff/fff';
+    ?>
     <div class="profile-userpic">
-      <img src="http://placehold.it/50/30a5ff/fff" class="img-responsive" alt="">
+      <!-- <img src="http://placehold.it/50/30a5ff/fff" class="img-responsive" alt=""  width="50" height="50"> -->
+      <img src="<?php if ($row['Image']) {
+												echo $row['Image'];
+                      } else { echo $noImage; } ?>" class="img-responsive" alt="image" class="responsive">
     </div>
     <div class="profile-usertitle">
-      <?php
-      $uid = $_SESSION['detsuid'];
-      $ret = mysqli_query($con, "select FullName from tbluser where ID='$uid'");
-      $row = mysqli_fetch_array($ret);
-      $name = $row['FullName'];
-      ?>
-      <div class="profile-usertitle-name"><?php echo $name; ?></div>
-      <div class="profile-usertitle-status"><span class="indicator label-success"></span>Online</div>
+
+      <div class="profile-usertitle-name"><?php echo $row['FullName']; ?></div>
+      <div class="profile-usertitle-position"><?php echo $row['Position']; ?></div>
+      <!-- <div class="profile-usertitle-status"><span class="indicator label-success"></span>Online</div> -->
     </div>
     <div class="clear"></div>
   </div>
@@ -31,9 +36,9 @@ include('includes/dbconnection.php');
         <li><a class="" href="add-expense.php">
             <span class="fa fa-plus">&nbsp;</span> Add Expenses
           </a></li>
-        <li><a class="" href="manage-expense.php">
+        <!-- <li><a class="" href="manage-expense.php">
             <span class="fa fa-arrow-right">&nbsp;</span> Manage Expenses
-          </a></li>
+          </a></li> -->
         <li><a href="add-expense-category.php">
             <span class="fa fa-list-alt">&nbsp;</span> Expense Category
           </a></li>
@@ -56,7 +61,7 @@ include('includes/dbconnection.php');
     </li>
     <li><a href="add-income.php"><em class="fa fa-usd">&nbsp;</em> Income</a></li>
     <li><a href="user-profile.php"><em class="fa fa-user">&nbsp;</em> My Profile</a></li>
-    <li><a href="change-password.php"><em class="fa fa-clone">&nbsp;</em> Change Password</a></li>
+    <!-- <li><a href="change-password.php"><em class="fa fa-clone">&nbsp;</em> Change Password</a></li> -->
     <li><a data-toggle="modal" data-target="#logOut"><em class="fa fa-power-off">&nbsp;</em> Logout</a></li>
   </ul>
 </div>
