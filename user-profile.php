@@ -8,6 +8,7 @@ if (strlen($_SESSION['detsuid'] == 0)) {
 	$userid = $_SESSION['detsuid'];
 	$fullname = $_POST['fullname'];
 	$position = $_POST['position'];
+	$email = $_POST['email'];
 	$mobno = $_POST['contactnumber'];
 	$noImage = 'https://placehold.it/150/30a5ff/fff';
 
@@ -34,7 +35,7 @@ if (strlen($_SESSION['detsuid'] == 0)) {
 	}
 
 	if (isset($_POST['submit'])) {
-		$query = mysqli_query($con, "update tbluser set FullName ='$fullname',Position ='$position', MobileNumber='$mobno' where ID='$userid'");
+		$query = mysqli_query($con, "update tbluser set FullName ='$fullname',Position ='$position',Email ='$email', MobileNumber='$mobno' where ID='$userid'");
 		if ($query) {
 			$msg = "User profile has been updated.";
 		} else {

@@ -94,7 +94,7 @@ if (strlen($_SESSION['detsuid'] == 0)) {
 
 							<div class="col-md-2">
 								<label class="btn btn-default" data-ng-disabled="true">
-									<small id="lblTotalCategories">Total No. of  Expense</small>
+									<small id="lblTotalCategories">Total No. of Expense</small>
 									<div><?php echo $rowCount['count']; ?></div>
 								</label>
 							</div>
@@ -104,7 +104,7 @@ if (strlen($_SESSION['detsuid'] == 0)) {
 										<thead>
 											<tr>
 												<th style="width: 10%">No.</th>
-												<th style="width: 20%">Expense Date (YYYY/mm/dd)</th>
+												<th style="width: 20%">Date (YYYY/mm/dd)</th>
 												<th style="width: 35%">Expense Category</th>
 												<th style="width: 20%">Expense Cost</th>
 												<th></th>
@@ -154,7 +154,7 @@ if (strlen($_SESSION['detsuid'] == 0)) {
 						</div>
 						<div class="modal-body">
 							<div class="form-group">
-								<label>Date of Expense</label>
+								<label>Date</label>
 								<input class="form-control" type="date" value="" name="dateexpense" required="true">
 							</div>
 							<div class="form-group">
@@ -190,17 +190,17 @@ if (strlen($_SESSION['detsuid'] == 0)) {
 						</div>
 						<div class="modal-body">
 							<div class="form-group">
-							<input type="hidden" class="form-control" id='editCatId' name="editCatId">
-								<label>Date of Expense</label>								
+								<input type="hidden" class="form-control" id='editCatId' name="editCatId">
+								<label>Date</label>
 								<input class="form-control" type="text" id="dateexpense" name="dateexpense" required="true">
 							</div>
 							<div class="form-group">
-								<label>Category</label>								
+								<label>Category</label>
 								<input class="form-control" type="text" id="expensecategory" name="expensecategory" required="true">
 							</div>
 							<div class="form-group">
 								<label>Cost of Expense</label>
-								<input class="form-control" type="text" id="costitem" name="costitem" required="true" >
+								<input class="form-control" type="text" id="costitem" name="costitem" required="true" onkeyup="numbersOnly(this)">
 							</div>
 						</div>
 						<div class="modal-footer">
@@ -244,32 +244,36 @@ if (strlen($_SESSION['detsuid'] == 0)) {
 		<script src="js/bootstrap-datepicker.js"></script>
 		<script src="js/custom.js"></script>
 		<script>
-		$(document).ready(function() {
+			function numbersOnly(input) {
+				var regex = /[^0-9]/g;
+				input.value = input.value.replace(regex, "");
+			}
+			$(document).ready(function() {
 
-			$('.deletebtn').on('click', function() {
-				$('#deleteExpense').modal('show');
-				$tr = $(this).closest('tr');
-				var data = $tr.children("td").map(function() {
-					return $(this).text();
-				}).get();
-				console.log(data);
-				$('#delCatId').val(data[4]);
-			});
+				$('.deletebtn').on('click', function() {
+					$('#deleteExpense').modal('show');
+					$tr = $(this).closest('tr');
+					var data = $tr.children("td").map(function() {
+						return $(this).text();
+					}).get();
+					console.log(data);
+					$('#delCatId').val(data[4]);
+				});
 
-			$('.editbtn').on('click', function() {
-				$('#editExpense').modal('show');
-				$tr = $(this).closest('tr');
-				var data = $tr.children("td").map(function() {
-					return $(this).text();
-				}).get();
-				console.log(data);				
-				$('#dateexpense').val(data[1]);
-			    $('#expensecategory').val(data[2]);
-				$('#costitem').val(data[3]);
-				$('#editCatId').val(data[4]);
+				$('.editbtn').on('click', function() {
+					$('#editExpense').modal('show');
+					$tr = $(this).closest('tr');
+					var data = $tr.children("td").map(function() {
+						return $(this).text();
+					}).get();
+					console.log(data);
+					$('#dateexpense').val(data[1]);
+					$('#expensecategory').val(data[2]);
+					$('#costitem').val(data[3]);
+					$('#editCatId').val(data[4]);
+				});
 			});
-		});
-	</script>
+		</script>
 	</body>
 
 	</html>
