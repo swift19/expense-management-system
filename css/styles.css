@@ -916,6 +916,19 @@ h1.page-header {
 #easypiechart-red .percent {
   color: #ef4040; }
 
+#piechart {
+    max-width: 100%;
+    max-height: 100%;
+    width: 850px;
+    height: 450px;
+    position: relative; }
+
+#linechart {
+  max-width: 100%;
+  max-height: 100%;
+  display: flex;
+  position: absolute; }
+
 #calendar, .datepicker-inline {
   width: 100%; }
 

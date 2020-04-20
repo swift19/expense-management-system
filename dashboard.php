@@ -5,8 +5,12 @@ include('includes/dbconnection.php');
 if (strlen($_SESSION['detsuid'] == 0)) {
 	header('location:logout.php');
 } else {
-
-
+	$userid = $_SESSION['detsuid'];
+	// $getExpenseQuery = mysqli_query($con, "select ExpenseCategory,ExpenseCost from tblexpense where UserId='$userid'");
+	// while ($row = mysqli_fetch_array($getExpenseQuery)) {		
+	// 	$chart_data .= "{ label: '" . $row["ExpenseCategory"] . "', data: " . $row["ExpenseCost"] . "},";
+	// }
+	// $chart_data = substr($chart_data, 0, -1);
 
 ?>
 	<!DOCTYPE html>
@@ -27,6 +31,55 @@ if (strlen($_SESSION['detsuid'] == 0)) {
 	<script src="js/html5shiv.js"></script>
 	<script src="js/respond.min.js"></script>
 	<![endif]-->
+
+		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+		<script type="text/javascript">
+			google.charts.load('current', {
+				'packages': ['corechart']
+			});
+			google.charts.setOnLoadCallback(drawChart);
+
+			function drawChart() {
+				var data = google.visualization.arrayToDataTable([
+					['ExpenseCategory', 'ExpenseCost'],
+					<?php
+					$getExpenseQuery = mysqli_query($con, "select ExpenseCategory,ExpenseCost from tblexpense where UserId='$userid'");
+					while ($row = mysqli_fetch_array($getExpenseQuery)) {
+						echo " ['" . $row['ExpenseCategory'] . "', " . $row['ExpenseCost'] . "], ";
+					}
+					?>
+				]);
+				var options = {
+					pieHole: 0.4
+				};
+				var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+				chart.draw(data, options);
+			}
+		</script>
+
+		<script type="text/javascript">
+			google.charts.load('current', {
+				'packages': ['line']
+			});
+			google.charts.setOnLoadCallback(drawBar);
+
+			function drawBar() {		
+				var data = new google.visualization.DataTable();
+				data.addColumn('string', 'ExpenseDate');
+				data.addColumn('number', 'Cost');
+
+				data.addRows([
+					<?php
+					$query = mysqli_query($con, "select ExpenseDate ,ExpenseCost from tblexpense where UserId='$userid'");
+					while ($row = mysqli_fetch_array($query)) {
+						echo " [ '" . $row['ExpenseDate'] . "', " . $row['ExpenseCost'] . " ], ";
+					}
+					?>
+				]);
+				var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+				chart.draw(data);				
+			}
+		</script>
 	</head>
 
 	<body>
@@ -39,17 +92,17 @@ if (strlen($_SESSION['detsuid'] == 0)) {
 				<ol class="breadcrumb">
 					<li>
 						<a href="#">
-							 <em class="fa fa-home"></em>						
+							<em class="fa fa-home"></em>
 						</a>
 					</li>
-					<li class="active">Dashboard </li>
+					<li class="active">Dashboard</li>
 				</ol>
 			</div>
 			<!--/.row-->
 
 			<div class="row">
 				<div class="col-lg-12">
-					<h1 class="page-header">Dashboard </h1>
+					<h1 class="page-header">Dashboard
 				</div>
 			</div>
 			<!--/.row-->
@@ -85,68 +138,63 @@ if (strlen($_SESSION['detsuid'] == 0)) {
 				<div class="col-xs-6 col-md-3">
 					<div class="panel panel-default">
 						<?php
-						//Yestreday Expense
-						$userid = $_SESSION['detsuid'];
-						$ydate = date('Y-m-d', strtotime("-1 days"));
-						$query1 = mysqli_query($con, "select sum(ExpenseCost)  as yesterdayexpense from tblexpense where (ExpenseDate)='$ydate' && (UserId='$userid');");
-						$result1 = mysqli_fetch_array($query1);
-						$sum_yesterday_expense = $result1['yesterdayexpense'];
+						$query4 = mysqli_query($con, "select sum(Income)  as totalincome from tblincome where (UserId='$userid');");
+						$result4 = mysqli_fetch_array($query4);
+						$sum_total_income = $result4['totalincome'];
 						?>
 						<div class="panel-body easypiechart-panel">
-							<h4>Yesterday's Expense</h4>
-							<div class="easypiechart" id="easypiechart-orange" data-percent="<?php echo $sum_yesterday_expense; ?>"><span class="percent"><?php if ($sum_yesterday_expense == "") {
-																																								echo "0";
-																																							} else {
-																																								echo $sum_yesterday_expense;
-																																							}
-
-																																							?></span></div>
-						</div>
-					</div>
-				</div>
-				<div class="col-xs-6 col-md-3">
-					<div class="panel panel-default">
-						<?php
-						//Weekly Expense
-						$userid = $_SESSION['detsuid'];
-						$pastdate =  date("Y-m-d", strtotime("-1 week"));
-						$crrntdte = date("Y-m-d");
-						$query2 = mysqli_query($con, "select sum(ExpenseCost)  as weeklyexpense from tblexpense where ((ExpenseDate) between '$pastdate' and '$crrntdte') && (UserId='$userid');");
-						$result2 = mysqli_fetch_array($query2);
-						$sum_weekly_expense = $result2['weeklyexpense'];
-						?>
-						<div class="panel-body easypiechart-panel">
-							<h4>Last 7day's Expense</h4>
-							<div class="easypiechart" id="easypiechart-teal" data-percent="<?php echo $sum_weekly_expense; ?>"><span class="percent"><?php if ($sum_weekly_expense == "") {
+							<h4>Total Income</h4>
+							<div class="easypiechart" id="easypiechart-orange" data-percent="<?php echo $sum_total_income; ?>"><span class="percent"><?php if ($sum_total_income == "") {
 																																							echo "0";
 																																						} else {
-																																							echo $sum_weekly_expense;
+																																							echo $sum_total_income;
 																																						}
 
 																																						?></span></div>
 						</div>
+
 					</div>
+
 				</div>
+
 				<div class="col-xs-6 col-md-3">
 					<div class="panel panel-default">
 						<?php
-						//Monthly Expense
-						$userid = $_SESSION['detsuid'];
-						$monthdate =  date("Y-m-d", strtotime("-1 month"));
-						$crrntdte = date("Y-m-d");
-						$query3 = mysqli_query($con, "select sum(ExpenseCost)  as monthlyexpense from tblexpense where ((ExpenseDate) between '$monthdate' and '$crrntdte') && (UserId='$userid');");
-						$result3 = mysqli_fetch_array($query3);
-						$sum_monthly_expense = $result3['monthlyexpense'];
+						$query5 = mysqli_query($con, "select sum(ExpenseCost)  as totalexpense from tblexpense where UserId='$userid';");
+						$result5 = mysqli_fetch_array($query5);
+						$sum_total_expense = $result5['totalexpense'];
 						?>
 						<div class="panel-body easypiechart-panel">
-							<h4>Last 30day's Expenses</h4>
-							<div class="easypiechart" id="easypiechart-red" data-percent="<?php echo $sum_monthly_expense; ?>"><span class="percent"><?php if ($sum_monthly_expense == "") {
-																																							echo "0";
-																																						} else {
-																																							echo $sum_monthly_expense;
-																																						}
+							<h4>Total Expense</h4>
+							<div class="easypiechart" id="easypiechart-teal" data-percent="<?php echo $sum_total_expense; ?>"><span class="percent"><?php if ($sum_total_expense == "") {
+																																						echo "0";
+																																					} else {
+																																						echo $sum_total_expense;
+																																					}
 
-																																						?></span></div>
+																																					?></span></div>
+						</div>
+
+					</div>
+
+				</div>
+
+				<div class="col-xs-6 col-md-3">
+					<div class="panel panel-default">
+						<?php
+						$totExpese = mysqli_fetch_array(mysqli_query($con, "select sum(ExpenseCost) as totExpese from tblexpense where UserId='$userid';"));
+						$totIncome = mysqli_fetch_array(mysqli_query($con, "select sum(Income) as totIncome from  tblincome where UserId='$userid';"));
+						$sum_balance = $totIncome['totIncome'] - $totExpese['totExpese'];
+						?>
+						<div class="panel-body easypiechart-panel">
+							<h4>Running Balance</h4>
+							<div class="easypiechart" id="easypiechart-red" data-percent="<?php echo $sum_balance; ?>"><span class="percent"><?php if ($sum_balance == "") {
+																																					echo "0";
+																																				} else {
+																																					echo $sum_balance;
+																																				}
+
+																																				?></span></div>
 						</div>
 					</div>
 				</div>
@@ -154,66 +202,31 @@ if (strlen($_SESSION['detsuid'] == 0)) {
 			</div>
 			<!--/.row-->
 			<div class="row">
-				<div class="col-xs-6 col-md-3">
+				<div class="col-xs-6">
 					<div class="panel panel-default">
-						<?php
-						//Yearly Expense
-						$userid = $_SESSION['detsuid'];
-						$cyear = date("Y");
-						$query4 = mysqli_query($con, "select sum(ExpenseCost)  as yearlyexpense from tblexpense where (year(ExpenseDate)='$cyear') && (UserId='$userid');");
-						$result4 = mysqli_fetch_array($query4);
-						$sum_yearly_expense = $result4['yearlyexpense'];
-						?>
 						<div class="panel-body easypiechart-panel">
-							<h4>Current Year Expenses</h4>
-							<div class="easypiechart" id="easypiechart-red" data-percent="<?php echo $sum_yearly_expense; ?>"><span class="percent"><?php if ($sum_yearly_expense == "") {
-																																						echo "0";
-																																					} else {
-																																						echo $sum_yearly_expense;
-																																					}
-
-																																					?></span></div>
-
-
+							<h4>Expense Graph</h4>
+							<div id="chart_div" class="linechart"></div>
 						</div>
-
 					</div>
-
-				</div>
-
-				<div class="col-xs-6 col-md-3">
-					<div class="panel panel-default">
-						<?php
-						//Yearly Expense
-						$userid = $_SESSION['detsuid'];
-						$query5 = mysqli_query($con, "select sum(ExpenseCost)  as totalexpense from tblexpense where UserId='$userid';");
-						$result5 = mysqli_fetch_array($query5);
-						$sum_total_expense = $result5['totalexpense'];
-						?>
-						<div class="panel-body easypiechart-panel">
-							<h4>Total Expenses</h4>
-							<div class="easypiechart" id="easypiechart-red" data-percent="<?php echo $sum_total_expense; ?>"><span class="percent"><?php if ($sum_total_expense == "") {
-																																						echo "0";
-																																					} else {
-																																						echo $sum_total_expense;
-																																					}
-
-																																					?></span></div>
-
-
-						</div>
-
-					</div>
-
 				</div>
 
 
+				<div class="col-xs-6">
+					<div class="panel panel-default">
+						<div class="panel-body easypiechart-panel">
+							<h4>Expense Chart</h4>
+							<div id="piechart" class="piechart"></div>
+						</div>
+					</div>
+
+				</div>
 			</div>
 
 			<!--/.row-->
 		</div>
 		<!--/.main-->
-		<?php include_once('includes/footer.php'); ?>
+		<!-- <?php include_once('includes/footer.php'); ?> -->
 		<script src="js/jquery-1.11.1.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
 		<script src="js/chart.min.js"></script>
@@ -222,7 +235,7 @@ if (strlen($_SESSION['detsuid'] == 0)) {
 		<script src="js/easypiechart-data.js"></script>
 		<script src="js/bootstrap-datepicker.js"></script>
 		<script src="js/custom.js"></script>
-		<script>
+		<!-- <script>
 			window.onload = function() {
 				var chart1 = document.getElementById("line-chart").getContext("2d");
 				window.myLine = new Chart(chart1).Line(lineChartData, {
@@ -232,7 +245,11 @@ if (strlen($_SESSION['detsuid'] == 0)) {
 					scaleFontColor: "#c5c7cc"
 				});
 			};
-		</script>
+		</script> -->
+
+
+
+
 
 	</body>
 
