@@ -43,7 +43,7 @@ if (strlen($_SESSION['detsuid'] == 0)) {
 				var data = google.visualization.arrayToDataTable([
 					['ExpenseCategory', 'ExpenseCost'],
 					<?php
-					$getExpenseQuery = mysqli_query($con, "select ExpenseCategory,ExpenseCost from tblexpense where UserId='$userid'");
+					$getExpenseQuery = mysqli_query($con, "select ExpenseCategory,ExpenseCost from tblexpense where UserId='$userid' GROUP BY ExpenseCategory");
 					while ($row = mysqli_fetch_array($getExpenseQuery)) {
 						echo " ['" . $row['ExpenseCategory'] . "', " . $row['ExpenseCost'] . "], ";
 					}
@@ -70,7 +70,7 @@ if (strlen($_SESSION['detsuid'] == 0)) {
 
 				data.addRows([
 					<?php
-					$query = mysqli_query($con, "select ExpenseDate ,ExpenseCost from tblexpense where UserId='$userid'");
+					$query = mysqli_query($con, "select ExpenseDate ,ExpenseCost from tblexpense where UserId='$userid' ORDER BY ExpenseDate ASC");					
 					while ($row = mysqli_fetch_array($query)) {
 						echo " [ '" . $row['ExpenseDate'] . "', " . $row['ExpenseCost'] . " ], ";
 					}

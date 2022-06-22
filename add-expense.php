@@ -112,7 +112,7 @@ if (strlen($_SESSION['detsuid'] == 0)) {
 											</tr>
 										</thead>
 										<?php
-										$ret = mysqli_query($con, "select * from tblexpense where UserId='$userid'");
+										$ret = mysqli_query($con, "select * from tblexpense where UserId='$userid' ORDER BY ExpenseDate DESC");
 										$cnt = 1;
 										while ($row = mysqli_fetch_array($ret)) {
 										?>

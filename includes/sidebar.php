@@ -7,9 +7,10 @@ include('includes/dbconnection.php');
   <div class="profile-sidebar">
     <?php
     $userid = $_SESSION['detsuid'];
-    $query = mysqli_query($con, "select * from tbluser where ID='$userid'");
+    $query = mysqli_query($con, "select * from tbluser where ID='$userid'");    
     $row = mysqli_fetch_array($query);    
-    $noImage = 'https://placehold.it/150/30a5ff/fff';
+    // $noImage = 'https://placehold.it/150/30a5ff/fff';
+    $noImage = './assets/images/users/default-profile-picture.jpg';
     ?>
     <div class="profile-userpic">
       <!-- <img src="http://placehold.it/50/30a5ff/fff" class="img-responsive" alt=""  width="50" height="50"> -->

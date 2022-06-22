@@ -17,6 +17,9 @@ if (strlen($_SESSION['detsuid'] == 0)) {
 	$getQuery = mysqli_query($con, "select sum(Income) as income from tblincome where UserId='$userid'");
 	$rowCount = mysqli_fetch_array($getQuery);
 
+	$new_date = date('Y/m/d', strtotime($dateincome));
+	echo $new_date;
+
 	if (isset($_POST['submit'])) {
 		$addQuery = mysqli_query($con, "insert into tblincome (UserId,Description,IncomeDate,Income) value('$userid','$description','$dateincome','$income')");
 		if ($addQuery) {
@@ -113,7 +116,7 @@ if (strlen($_SESSION['detsuid'] == 0)) {
 											</tr>
 										</thead>
 										<?php
-										$ret = mysqli_query($con, "select * from tblincome where UserId='$userid'");
+										$ret = mysqli_query($con, "select * from tblincome where UserId='$userid' ORDER BY IncomeDate DESC");
 										$cnt = 1;
 										while ($row = mysqli_fetch_array($ret)) {
 										?>
@@ -192,7 +195,7 @@ if (strlen($_SESSION['detsuid'] == 0)) {
 							</div>
 							<div class="form-group">
 								<label>Date</label>
-								<input class="form-control" type="text" id="dateincome" name="dateincome" required="true">								
+								<input class="form-control" type="date" name="dateincome" required="true" value="<?php echo date('Y/m/d'); ?>"  >								
 							</div>
 							<div class="form-group">
 								<label>Income</label>
@@ -266,7 +269,7 @@ if (strlen($_SESSION['detsuid'] == 0)) {
 					$('#description').val(data[1]);
 					$('#dateincome').val(data[2]);
 					$('#income').val(data[3]);
-					$('#editCatId').val(data[4]);
+					$('#editCatId').val(data[4]); 
 				});
 			});
 		</script>
